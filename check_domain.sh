@@ -210,6 +210,8 @@ get_expiration() {
 		DATE_DD_MM_YYYY_SLASH_HHMMSS_TZ = DATE_DD_MM_YYYY_SLASH " " HH_MM_DD " [A-Z]+"
 		# 14 Jan 2016 22:40:29 UTC
 		DATE_DD_MON_YYYY_HHMMSS_TZ_SPACE = "[0-9][0-9] " MON " " YYYY " " HH_MM_DD " UTC"
+		# 15.05.2016 13:36:48
+	        DATE_DD_MM_YYYY_DOT_HH_MM_SS = DATE_DD_MM_YYYY_DOT " " HH_MM_DD
 
 		split("january february march april may june july august september october november december", months, " ");
 		for (i in months) {
@@ -258,6 +260,9 @@ get_expiration() {
 
 	# expires:	2015-11-18
 	/expires:[ ]+/ && $NF ~ DATE_YYYY_MM_DD_DASH {print $NF; exit}
+
+    	# Expiration date: 16.11.2016 15:30:13
+        /Expiration date:/ && $0 ~ DATE_DD_MM_YYYY_DOT_HH_MM_SS {split($(NF-1), a, "."); printf("%s-%s-%s", a[3], a[2], a[1]); exit}
 
 	# renewal date: 2016.01.14 18:47:31
 	/renewal date:/ && $0 ~ DATE_YYYYMMDD_HHMMSS {split($(NF-1), a, "."); printf("%s-%s-%s", a[1], a[2], a[3]); exit}
